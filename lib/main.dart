@@ -120,6 +120,7 @@ class _HomeState extends State<Home> {
       child: Text(
         _result,
         textAlign: TextAlign.center,
+        style: TextStyle(fontSize: 20.0),
       ),
     );
   }
