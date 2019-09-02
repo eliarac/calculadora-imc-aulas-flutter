@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:toggle_button/toggle_button.dart';
 
 void main() => runApp(
       MaterialApp(
@@ -120,7 +121,7 @@ class _HomeState extends State<Home> {
       child: Text(
         _result,
         textAlign: TextAlign.center,
-        style: TextStyle(fontSize: 20.0),
+        style: TextStyle(fontSize: 25.0 ,fontWeight: FontWeight.bold),
       ),
     );
   }
