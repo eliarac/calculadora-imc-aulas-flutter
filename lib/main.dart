@@ -8,24 +8,30 @@ void main() => runApp(
       ),
     );
 
+
 class Home extends StatefulWidget {
   @override
   _HomeState createState() => _HomeState();
 }
-
+enum SingingCharacter { feminino, masculino }
 class _HomeState extends State<Home> {
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   TextEditingController _weightController = TextEditingController();
   TextEditingController _heightController = TextEditingController();
   String _result;
+  int selectedRadioTile;
+  SingingCharacter _character = SingingCharacter.feminino;
+  //SingingCharacter _character2 = SingingCharacter.masculino;
 
+  
   @override
   void initState() {
     super.initState();
     resetFields();
+ 
   }
-
+ 
   void resetFields() {
     _weightController.text = '';
     _heightController.text = '';
@@ -72,6 +78,7 @@ class _HomeState extends State<Home> {
               label: "Altura (cm)",
               error: "Insira uma altura!",
               controller: _heightController),
+          buildRadioListTile(),
           buildTextResult(),
           buildCalculateButton(),
         ],
@@ -121,11 +128,51 @@ class _HomeState extends State<Home> {
       child: Text(
         _result,
         textAlign: TextAlign.center,
-        style: TextStyle(fontSize: 25.0 ,fontWeight: FontWeight.bold),
+        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25.0) , 
+      
       ),
     );
   }
 
+  Widget buildRadioListTile(){
+    return Center(
+        
+       child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            Text("Sexo:", textAlign: TextAlign.left,
+             style: TextStyle(fontWeight: FontWeight.bold,
+            fontSize: 25.0),
+            ),
+            ListTile(
+                title: const Text('Feminino'),
+                leading: Radio(
+                value: SingingCharacter.feminino,
+                groupValue: _character,
+                
+                onChanged: (SingingCharacter value){
+                  setState(() {
+                    _character = value;
+                  });
+                },
+               ),
+            ),
+            ListTile(
+                title: const Text('Masculino'),
+                leading: Radio(
+                value: SingingCharacter.masculino,
+                groupValue: _character,
+                onChanged: (SingingCharacter value){
+                  setState(() {
+                    _character = value;
+                  });
+                },
+              ),
+            ),
+    ],),);
+     
+              
+  }
   Widget buildTextFormField(
       {TextEditingController controller, String error, String label}) {
     return TextFormField(
