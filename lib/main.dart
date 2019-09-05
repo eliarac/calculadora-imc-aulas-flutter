@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:toggle_button/toggle_button.dart';
 
 void main() => runApp(
       MaterialApp(
@@ -21,7 +20,7 @@ class _HomeState extends State<Home> {
   TextEditingController _heightController = TextEditingController();
   String _result;
   int selectedRadioTile;
-  SingingCharacter _character = SingingCharacter.feminino;
+  //SingingCharacter _character = SingingCharacter.feminino;
   //SingingCharacter _character2 = SingingCharacter.masculino;
 
   
@@ -29,9 +28,16 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
     resetFields();
+    selectedRadioTile = 0;
+
  
   }
- 
+  setselectedRadioTile(int val){
+    setState(() {
+      selectedRadioTile = val; 
+    });
+  }
+
   void resetFields() {
     _weightController.text = '';
     _heightController.text = '';
@@ -93,19 +99,33 @@ class _HomeState extends State<Home> {
 
     setState(() {
       _result = "IMC = ${imc.toStringAsPrecision(2)}\n";
-      if (imc < 18.6)
+      if (selectedRadioTile == 1){
+      if (imc < 19.1)
         _result += "Abaixo do peso";
-      else if (imc < 25.0)
+      else if (imc < 25.8)
         _result += "Peso ideal";
-      else if (imc < 30.0)
+      else if (imc < 27.3)
         _result += "Levemente acima do peso";
-      else if (imc < 35.0)
-        _result += "Obesidade Grau I";
-      else if (imc < 40.0)
-        _result += "Obesidade Grau II";
-      else
-        _result += "Obesidade Grau IIII";
-    });
+      else if (imc < 32.3)
+        _result += "Acima do peso";
+      else if (imc >= 32.4)
+        _result += "Obesidade";
+
+    } else if (selectedRadioTile == 2){
+      if (imc < 20.70)
+        _result += "Abaixo do peso";
+      else if (imc < 26.4)
+        _result += "Peso ideal";
+      else if (imc < 27.8)
+        _result += "Levemente acima do peso";
+      else if (imc < 31.1)
+        _result += "Acima do peso";
+      else if (imc >= 31.2)
+        _result += "Obesidade";
+
+    }
+    } 
+    );
   }
 
   Widget buildCalculateButton() {
@@ -138,36 +158,32 @@ class _HomeState extends State<Home> {
     return Center(
         
        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text("Sexo:", textAlign: TextAlign.left,
-             style: TextStyle(fontWeight: FontWeight.bold,
-            fontSize: 25.0),
+            Padding(
+               padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+               child: Text("Sexo:", textAlign: TextAlign.center, 
+                            style: TextStyle(fontWeight: FontWeight.bold,
+                            fontSize: 25.0),
+            ),),
+            
+            RadioListTile(
+              value: 1,
+              groupValue: selectedRadioTile,
+              title: const Text('Feminino'),
+              onChanged: (val){
+                setselectedRadioTile(val);
+              },
+              selected: true,
             ),
-            ListTile(
-                title: const Text('Feminino'),
-                leading: Radio(
-                value: SingingCharacter.feminino,
-                groupValue: _character,
-                
-                onChanged: (SingingCharacter value){
-                  setState(() {
-                    _character = value;
-                  });
-                },
-               ),
-            ),
-            ListTile(
-                title: const Text('Masculino'),
-                leading: Radio(
-                value: SingingCharacter.masculino,
-                groupValue: _character,
-                onChanged: (SingingCharacter value){
-                  setState(() {
-                    _character = value;
-                  });
-                },
-              ),
+            RadioListTile(
+              value: 2,
+              groupValue: selectedRadioTile,
+              title: const Text('Masculino'),
+              onChanged: (val){
+                setselectedRadioTile(val);
+              },
+              selected: false,
             ),
     ],),);
      
