@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'models/pessoa.dart';
 
 void main() => runApp(
       MaterialApp(
@@ -7,34 +8,30 @@ void main() => runApp(
       ),
     );
 
-
 class Home extends StatefulWidget {
   @override
   _HomeState createState() => _HomeState();
 }
-enum SingingCharacter { feminino, masculino }
+
 class _HomeState extends State<Home> {
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
+  List colors = [Colors.green[100], Colors.green[400], Colors.red[100], Colors.red[400];
   TextEditingController _weightController = TextEditingController();
   TextEditingController _heightController = TextEditingController();
   String _result;
   int selectedRadioTile;
-  //SingingCharacter _character = SingingCharacter.feminino;
-  //SingingCharacter _character2 = SingingCharacter.masculino;
 
-  
   @override
   void initState() {
     super.initState();
     resetFields();
     selectedRadioTile = 0;
-
- 
   }
-  setselectedRadioTile(int val){
+
+  setselectedRadioTile(int val) {
     setState(() {
-      selectedRadioTile = val; 
+      selectedRadioTile = val;
     });
   }
 
@@ -99,33 +96,28 @@ class _HomeState extends State<Home> {
 
     setState(() {
       _result = "IMC = ${imc.toStringAsPrecision(2)}\n";
-      if (selectedRadioTile == 1){
-      if (imc < 19.1)
-        _result += "Abaixo do peso";
-      else if (imc < 25.8)
-        _result += "Peso ideal";
-      else if (imc < 27.3)
-        _result += "Levemente acima do peso";
-      else if (imc < 32.3)
-        _result += "Acima do peso";
-      else if (imc >= 32.4)
-        _result += "Obesidade";
-
-    } else if (selectedRadioTile == 2){
-      if (imc < 20.70)
-        _result += "Abaixo do peso";
-      else if (imc < 26.4)
-        _result += "Peso ideal";
-      else if (imc < 27.8)
-        _result += "Levemente acima do peso";
-      else if (imc < 31.1)
-        _result += "Acima do peso";
-      else if (imc >= 31.2)
-        _result += "Obesidade";
-
-    }
-    } 
-    );
+      if (selectedRadioTile == 1) {
+        if (imc < 19.1)
+          _result += "Abaixo do peso";
+        else if (imc < 25.8)
+          _result += "Peso ideal";
+        else if (imc < 27.3)
+          _result += "Levemente acima do peso";
+        else if (imc < 32.3)
+          _result += "Acima do peso";
+        else if (imc >= 32.4) _result += "Obesidade";
+      } else if (selectedRadioTile == 2) {
+        if (imc < 20.70)
+          _result += "Abaixo do peso";
+        else if (imc < 26.4)
+          _result += "Peso ideal";
+        else if (imc < 27.8)
+          _result += "Levemente acima do peso";
+        else if (imc < 31.1)
+          _result += "Acima do peso";
+        else if (imc >= 31.2) _result += "Obesidade";
+      }
+    });
   }
 
   Widget buildCalculateButton() {
@@ -134,7 +126,7 @@ class _HomeState extends State<Home> {
       child: RaisedButton(
         onPressed: () {
           if (_formKey.currentState.validate()) {
-            calculateImc();
+              calculateImc();
           }
         },
         child: Text('CALCULAR', style: TextStyle(color: Colors.white)),
@@ -148,47 +140,51 @@ class _HomeState extends State<Home> {
       child: Text(
         _result,
         textAlign: TextAlign.center,
-        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25.0) , 
+        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25.0),
+      ),
       
+    );
+  }
+
+  Widget buildRadioListTile() {
+    return Center(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
+            child: Text(
+              "Sexo:",
+              textAlign: TextAlign.center, //textWidthBasis: TextWidthBasis.longestLine,
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15.0),
+            ),
+          ),
+          Padding( padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 0.000000000000005), 
+          child: RadioListTile(
+            value: 1,
+            groupValue: selectedRadioTile,
+            title: const Text('Feminino'),
+            onChanged: (val) {
+              setselectedRadioTile(val);
+            },
+            selected: true,
+          ),
+          ),
+          RadioListTile(
+            value: 2,
+            groupValue: selectedRadioTile,
+            title: const Text('Masculino'),
+            onChanged: (val) {
+              setselectedRadioTile(val);
+            },
+            selected: false,
+          )
+          
+        ],
       ),
     );
   }
 
-  Widget buildRadioListTile(){
-    return Center(
-        
-       child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Padding(
-               padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-               child: Text("Sexo:", textAlign: TextAlign.center, 
-                            style: TextStyle(fontWeight: FontWeight.bold,
-                            fontSize: 25.0),
-            ),),
-            
-            RadioListTile(
-              value: 1,
-              groupValue: selectedRadioTile,
-              title: const Text('Feminino'),
-              onChanged: (val){
-                setselectedRadioTile(val);
-              },
-              selected: true,
-            ),
-            RadioListTile(
-              value: 2,
-              groupValue: selectedRadioTile,
-              title: const Text('Masculino'),
-              onChanged: (val){
-                setselectedRadioTile(val);
-              },
-              selected: false,
-            ),
-    ],),);
-     
-              
-  }
   Widget buildTextFormField(
       {TextEditingController controller, String error, String label}) {
     return TextFormField(
