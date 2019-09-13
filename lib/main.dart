@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'models/pessoa.dart';
+//import 'models/pessoa.dart';
 
 void main() => runApp(
       MaterialApp(
@@ -16,7 +16,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  List colors = [Colors.green[100], Colors.green[400], Colors.red[100], Colors.red[400];
+  //List colors = [Colors.green[100], Colors.green[400], Colors.red[100], Colors.red[400];
   TextEditingController _weightController = TextEditingController();
   TextEditingController _heightController = TextEditingController();
   String _result;
